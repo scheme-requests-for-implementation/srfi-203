@@ -1,0 +1,253 @@
+<!DOCTYPE html> <!-- Time-stamp: <2020-07-09 00:14:33 lockywolf> -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>SRFI ?: A Simple Picture Language in the Style of SICP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/srfi.css" type="text/css">
+    <link href="/favicon.png" rel="icon" sizes="192x192" type="image/png">
+  </head>
+
+  <body>
+
+<h1>Title</h1>
+
+A Simple Picture Language in the Style of SICP
+
+<h1>Author</h1>
+
+Vladimir Nikishkin
+
+<h1>Status</h1>
+
+??? the draft/final/withdrawn status of the SRFI, information on how
+to subscribe to its mailing list, and important dates in its history.
+The editor will add this section.
+
+<h1>Abstract</h1>
+
+This SRFI proposes a simple library for programmatic drawing of
+pictures compatible with the Section 2.2.4 of the Structure and
+Interpretation of Computer Programs.
+
+It aims to close the gap between the Scheme suggested for study in
+the book and the portable Scheme.
+
+<h1>Issues</h1>
+
+<ol>
+<li>Parameteriseing the canvas name or the canvas size may lead to unexpected
+results.</li>
+<li> <code>canvas-reset</code> and <code>canvas-cleanup</code> are not
+called <code>canvas-reset!</code> and <code>canvas-cleanup!</code>,
+although they are definitely called for side-effects. However, in SICP
+the functions <code>draw-line</code> and <code>rogers</code> do not
+bear an exclamation mark as well.</li>
+<li><code>canvas-name</code> and <code>canvas-size</code> are not very
+well behaving.</li>
+</ol>
+
+<h1>Rationale</h1>
+
+The "Structure and Interpretation of Computer Programs" is one of the
+world's most famous programming textbooks. The code examples in the book are
+given in Scheme, and the exercises are mostly expected to be done in Scheme.
+The examples and exercises are best executed with a Scheme system support
+that implements a reasonable subset of the Scheme language.
+Furthermore, the textbook "assumes" the existence of several primitives not
+included in any of the Scheme reports.
+Most of these primitives are already either covered by other relevant SRFIs,
+or can be implemented on top of those.
+The picture language of the Section 2.2.4 cannot, however, be portably
+implemented using any of the portable Scheme libraries.
+This SRFI aims to fill this gap.
+
+<OL>
+<LI> Racket (complete) implementation of the picture language.
+    <A HREF="https://planet.racket-lang.org/package-source/soegaard/sicp.plt/2/1/planet-docs/sicp-manual/index.html"> Link </A>
+</LI>
+
+<LI> Racket SCIP Library, Picture Language.
+    <A HREF="https://docs.racket-lang.org/sicp-manual/SICP_Picture_Language.html"> Link </A>
+</LI>
+
+<LI> Structure and Interpretation of Computer Programs, companion website. Problem Set 4 (Picture Language). 
+    <A HREF="https://mitpress.mit.edu/sites/default/files/sicp/psets/ps4hnd/readme.html"> Link </A>
+</LI>
+
+<LI> The Picture Language implementation in script-fu by mngu2382.
+    <A HREF="https://mngu2382.github.io/sicp/chapter2/00-notes02a.html"> Link </A> 
+</LI>
+
+<LI> The Picture Language implementation in Racket by skanev.
+    <A HREF="https://github.com/skanev/playground/tree/master/scheme/sicp/02/showcase/picturelang"> Link </A>
+</LI>
+
+<LI> Functional Geometry by Peter Henderson.
+    <A HREF="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.137.1503"> Link </A>
+</LI>
+
+</OL>
+
+
+This SRFI is not a complete implementation of the picture language as it is
+presented in the Section 2.2.4.
+This is intentional. The scope of this SRFI is not to implement the whole
+drawing library presented, but only to implement the minimal subset on top of
+which the code from the book can be run.
+This leads to functions accepting as arguments certain data structures,
+constructors for which are not provided within this SRFI.
+Those should be sufficiently easy to implement using the code from the book.
+Nevertheless, the code from the reference implementation test file can be
+reused.
+
+<h1>Specification</h1>
+
+
+<!-- <P> -->
+<!-- <DL> -->
+<!-- <DT><U>Parameter:</U> <B>canvas-size</B> -->
+<!-- <DD> -->
+<!-- For pixel-based displays, defines the size of the canvas in pixels. -->
+<!-- For all other types of displays, defines the size of the canvas in the units -->
+<!-- most natural for that type of display. -->
+<!-- The default value is 200. -->
+<!-- </DL> -->
+
+
+<!-- <P> -->
+<!-- <DL> -->
+<!-- <DT><U>Parameter:</U> <B>canvas-name</B> -->
+<!-- <DD> -->
+<!-- Defines a system-dependent name for a file. -->
+<!-- </DL> -->
+
+<P>
+<DL>
+<DT><U>Function:</U> <B>(canvas-reset)</B>
+<DD>
+Creates a new blank canvas on which subsequent calls to drawing functions shall
+draw.
+</DL>
+
+<P>
+<DL>
+<DT><U>Function:</U> <B>(canvas-refresh)</B>
+<DD>
+Returns a system-dependent identifier (not to be confused with Scheme
+identifiers) of the canvas on which the functions from
+this package may have drawn.
+The canvas may not exist unless it has been drawn at.
+</DL>
+
+<P>
+<DL>
+<DT><U>Function:</U> <B>(canvas-cleanup)</B>
+<DD>
+Deletes the current canvas and cleans the space it occupies.
+</DL>
+
+<P>
+<DL>
+<DT><U>Function:</U> <B>(draw-line begin end)</B>
+<DD>
+Draws a line on the canvas starting at <code>(car begin)</code> , <code> (car
+(cdr begin))</code> and ending at <code>(car end)</code> , <code> (car
+(cdr end))</code>.
+
+It is an error if <b>begin</b> is not a list of at least two numbers.
+It is an error if <b>end</b> is not a list of at least two numbers.
+</DL>
+
+<P>
+<DL>
+<DT><U>Function:</U> <B>(rogers v-list)</B>
+<DD>
+Draws an image of MIT’s founder, William Barton Rogers, as shown in
+Figure 2.11 of SICP, on the canvas in the way that it fits the frame defined
+by the vectors <code>(car v-list)</code>, <code>(cadr v-list)</code> and
+<code>(caddr v-list)</code> in a natural linear algebraic way.
+
+<p>
+It is an error if <b>v-list</b> is not a list of at least three elements,
+each of which is a list of at least two numbers.
+
+<p>
+<code>v-list</code> may be one of the possible implementations of a frame,
+in the SICP terminology. However, in order to avoid nudging the potential
+users of the library into a particular implementation of frames, we
+opted for specifying one of the possible underlying data structures directly.
+Converting between this representation, as well as any other representation,
+should be a relatively simple exercise.
+
+</DL>
+
+<h2>Additional functions</h2>
+
+These functions, although they are not strictly needed for SICP, may make
+programming with the picture language less mundane.
+
+<P>
+<DL>
+<DT><U>Function:</U> <B>(draw-bezier . v-list)</B>
+<DD>
+
+Draws a cubic Bezier curve between the first and the last points in the
+<code>v-list</code>. If the list has four elements, the middle two are
+used as knots. If the list has three elements, the curve is a quadric curve.
+Otherwise the result is unspecified.
+
+<p>
+It is an error if <b>v-list</b> is not a list of at least three elements,
+each of which is a list of at least two numbers.
+
+<P>
+<DL>
+<DT><U>Function:</U> <B>(jpeg-file->painter file-name)</B>
+<DD>
+
+If <code>file-name</code> exists and is a JPEG file,
+<code>jpeg-file->painter</code> returns
+a painter similar to <code>rogers</code>, that is a procedure that
+accepts a frame and draws the image located at <code>file-name</code>
+shifted, rotated, and skewed to fit into the frame.
+Otherwise, the result is unspecified.
+
+
+<h1>Implementation</h1>
+
+The "199.sld" and "199.scm" constitute a simple file-based implementation, in which
+the "system-dependent identifier" corresponds to a file name.
+
+<h1>Acknowledgements</h1>
+
+??? credit where it is due
+
+<h1>Copyright</h1>
+Copyright &copy; Vladimir Nikishkin (2020).
+
+<p>
+  Permission is hereby granted, free of charge, to any person
+  obtaining a copy of this software and associated documentation files
+  (the "Software"), to deal in the Software without restriction,
+  including without limitation the rights to use, copy, modify, merge,
+  publish, distribute, sublicense, and/or sell copies of the Software,
+  and to permit persons to whom the Software is furnished to do so,
+  subject to the following conditions:
+
+<p>
+  The above copyright notice and this permission notice (including the
+  next paragraph) shall be included in all copies or substantial
+  portions of the Software.
+<p>
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+  BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+
+  <hr>
+  <address>Editor: <a href="mailto:srfi-editors+at+srfi+dot+schemers+dot+org">Arthur A. Gleckler</a></address></body></html>
