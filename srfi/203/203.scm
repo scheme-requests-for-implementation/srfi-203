@@ -1,4 +1,4 @@
-;;; -*- mode: scheme; -*- 
+;;; -*- mode: scheme; -*-
 ;;; Time-stamp: <2020-07-08 23:59:50 lockywolf>
 ;;; Author: lockywolf
 ;;; Created: 2020-06
@@ -100,18 +100,18 @@
 
 (define (idol idoldata frame)
   (define volatile-rogers-filename
-      (string-append 
+      (string-append
          #;"/tmp/"
          (substring (process->string "uuidgen") 0 36)
          ".jpg"))
   (with-output-to-file volatile-rogers-filename
     (lambda ()
-       (write-bytevector idoldata)))  
+       (write-bytevector idoldata)))
   (system "convert"
 	  (canvas-name)
 	  "("
 	  "-virtual-pixel" "Transparent"
-	   "+distort" 
+	   "+distort"
 	   "affineprojection"
 	   (string-append
 	    (number->string (car (edge1-frame  frame)))
@@ -123,7 +123,7 @@
 	    (number->string (cadr (edge2-frame  frame)))
 	    ",0,0"
              )
-	   
+
            "-background" "transparent"
 	   "-splice" (pict-vect->magick-vect
 		      (origin-frame frame) "x")
