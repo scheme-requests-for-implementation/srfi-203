@@ -1,0 +1,20 @@
+* SRFI 203: A Simple Picture Language in the Style of SICP
+
+** by Vladimir Nikishkin
+
+
+
+keywords: [[https://srfi.schemers.org/?keywords=binding][Binding]], [[https://srfi.schemers.org/?keywords=control-flow][Control Flow]], [[https://srfi.schemers.org/?keywords=pattern-matching][Pattern Matching]]
+
+This repository hosts [[https://srfi.schemers.org/srfi-203/][SRFI 203]]: A Simple Picture Language in the Style of SICP, a [[https://srfi.schemers.org/][Scheme Request for Implementation]].
+
+This SRFI is in /draft/ status.
+
+The full documentation for this SRFI can be found in the [[https://srfi.schemers.org/srfi-203/srfi-203.html][SRFI Document]].
+
+If you'd like to participate in the discussion of this SRFI, or report issues with it, please [[https://srfi.schemers.org/srfi-203/][join the SRFI-203 mailing list]] and send your message there.
+
+Thank you.
+
+
+[[mailto:srfi-editors@srfi.schemers.org][The SRFI Editors]]
