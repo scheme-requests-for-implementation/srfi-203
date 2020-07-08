@@ -2,29 +2,24 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>SRFI ?: A Simple Picture Language in the Style of SICP</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/srfi.css" type="text/css">
+    <title>SRFI 203: A Simple Picture Language in the Style of SICP</title>
     <link href="/favicon.png" rel="icon" sizes="192x192" type="image/png">
-  </head>
+    <link rel="stylesheet" href="/srfi.css" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1"></head>
 
   <body>
+    <h1><a href="https://srfi.schemers.org/"><img class="srfi-logo" src="https://srfi.schemers.org/srfi-logo.svg" alt="SRFI logo" /></a>203: A Simple Picture Language in the Style of SICP</h1>
 
-<h1>Title</h1>
+<p>by Vladimir Nikishkin</p>
 
-A Simple Picture Language in the Style of SICP
+<h2>Status</h2>
 
-<h1>Author</h1>
-
-Vladimir Nikishkin
-
-<h1>Status</h1>
 
 ??? the draft/final/withdrawn status of the SRFI, information on how
 to subscribe to its mailing list, and important dates in its history.
 The editor will add this section.
+<h2>Abstract</h2>
 
-<h1>Abstract</h1>
 
 This SRFI proposes a simple library for programmatic drawing of
 pictures compatible with the Section 2.2.4 of the Structure and
@@ -33,7 +28,7 @@ Interpretation of Computer Programs.
 It aims to close the gap between the Scheme suggested for study in
 the book and the portable Scheme.
 
-<h1>Issues</h1>
+<h2>Issues</h2>
 
 <ol>
 <li>Parameteriseing the canvas name or the canvas size may lead to unexpected
@@ -47,7 +42,7 @@ bear an exclamation mark as well.</li>
 well behaving.</li>
 </ol>
 
-<h1>Rationale</h1>
+<h2>Rationale</h2>
 
 The "Structure and Interpretation of Computer Programs" is one of the
 world's most famous programming textbooks. The code examples in the book are
@@ -214,16 +209,16 @@ shifted, rotated, and skewed to fit into the frame.
 Otherwise, the result is unspecified.
 
 
-<h1>Implementation</h1>
+<h2>Implementation</h2>
 
 The "199.sld" and "199.scm" constitute a simple file-based implementation, in which
 the "system-dependent identifier" corresponds to a file name.
 
-<h1>Acknowledgements</h1>
+<h2>Acknowledgements</h2>
 
 ??? credit where it is due
 
-<h1>Copyright</h1>
+<h2>Copyright</h2>
 Copyright &copy; Vladimir Nikishkin (2020).
 
 <p>
