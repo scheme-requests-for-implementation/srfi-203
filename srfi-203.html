@@ -35,7 +35,7 @@ results.</li>
 <li> <code>canvas-reset</code> and <code>canvas-cleanup</code> are not
 called <code>canvas-reset!</code> and <code>canvas-cleanup!</code>,
 although they are definitely called for side effects. However, in SICP
-the functions <code>draw-line</code> and <code>rogers</code> do not
+the procedures <code>draw-line</code> and <code>rogers</code> do not
 bear an exclamation mark, either.</li>
 <li><code>canvas-name</code> and <code>canvas-size</code> do not behave very
 well.</li>
@@ -77,7 +77,7 @@ This SRFI aims to fill this gap.</p>
     <A HREF="https://github.com/skanev/playground/tree/master/scheme/sicp/02/showcase/picturelang"> Link </A>
 </LI>
 
-<LI> Functional Geometry by Peter Henderson.
+<LI> Procedural Geometry by Peter Henderson.
     <A HREF="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.137.1503"> Link </A>
 </LI>
 
@@ -89,7 +89,7 @@ presented in the Section 2.2.4.
 This is intentional. The scope of this SRFI is not to implement the whole
 drawing library presented, but only to implement the minimal subset on top of
 which the code from the book can be run.
-This leads to functions accepting as arguments certain data structures
+This leads to procedures accepting as arguments certain data structures
 for which constructors are not provided within this SRFI.
 Those should be sufficiently easy to implement using the code from the book.
 Nevertheless, the code from the sample implementation test file can be
@@ -117,23 +117,23 @@ reused.</p>
 <!-- </DL> -->
 
 <DL>
-<DT><U>Function:</U> <code>(canvas-reset)</code>
+<DT><U>Procedure:</U> <code>(canvas-reset)</code>
 <DD>
-Creates a new blank canvas on which subsequent calls to drawing functions shall
+Creates a new blank canvas on which subsequent calls to drawing procedures shall
 draw.
 
-<DT><U>Function:</U> <code>(canvas-refresh)</code>
+<DT><U>Procedure:</U> <code>(canvas-refresh)</code>
 <DD>
 Returns a system-dependent identifier (not to be confused with Scheme
-identifiers) of the canvas on which the functions from
+identifiers) of the canvas on which the procedures from
 this package may draw.
 The canvas may not exist unless it has been drawn on.
 
-<DT><U>Function:</U> <code>(canvas-cleanup)</code>
+<DT><U>Procedure:</U> <code>(canvas-cleanup)</code>
 <DD>
 Deletes the current canvas and cleans the space it occupies.
 
-<DT><U>Function:</U> <code>(draw-line start end)</code>
+<DT><U>Procedure:</U> <code>(draw-line start end)</code>
 <DD>
 Draws a line on the canvas starting at <code>(car start)</code> , <code> (car
 (cdr start))</code> and ending at <code>(car end)</code> , <code> (car
@@ -142,7 +142,7 @@ Draws a line on the canvas starting at <code>(car start)</code> , <code> (car
 It is an error if <code>start</code> is not a list of at least two numbers.
 It is an error if <code>end</code> is not a list of at least two numbers.
 
-<DT><U>Function:</U> <code>(rogers v-list)</code>
+<DT><U>Procedure:</U> <code>(rogers v-list)</code>
 <DD>
 <p>Draws an image of MIT's founder, William Barton Rogers, as shown in
 Figure 2.11 of SICP, on the canvas so that it fits the frame defined
@@ -163,13 +163,13 @@ should be a relatively simple exercise.</p>
 
 </DL>
 
-<h3>Additional functions</h3>
+<h3>Additional procedures</h3>
 
-<p>These functions, although they are not strictly needed for SICP, may make
+<p>These procedures, although they are not strictly needed for SICP, may make
 programming with the picture language less mundane.</p>
 
 <DL>
-<DT><U>Function:</U> <code>(draw-bezier . v-list)</code>
+<DT><U>Procedure:</U> <code>(draw-bezier . v-list)</code>
 <DD>
 
 <p>Draws a cubic Bezier curve between the first and the last points in the
@@ -181,7 +181,7 @@ Otherwise the result is unspecified.</p>
 It is an error if <code>v-list</code> is not a list of at least three elements,
 each of which is a list of at least two numbers.</p>
 
-<DT><U>Function:</U> <code>(jpeg-file->painter file-name)</code>
+<DT><U>Procedure:</U> <code>(jpeg-file->painter file-name)</code>
 <DD>
 
 <p>If <code>file-name</code> exists and is a JPEG file,
