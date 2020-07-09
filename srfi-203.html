@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- Time-stamp: <2020-07-09 11:09:16 lockywolf> -->
+<!DOCTYPE html> <!-- Time-stamp: <2020-07-09 11:13:43 lockywolf> -->
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -127,8 +127,8 @@ It is an error if <code>end</code> is not a list of at least two numbers.
 <DD>
 <p>Draws an image of MIT's founder, William Barton Rogers, as shown in
 Figure 2.11 of SICP, on the canvas so that it fits the frame defined
-by the vectors <code>(car v-list)</code>, <code>(cadr v-list)</code> and
-<code>(caddr v-list)</code> in a natural linear algebraic way.</p>
+by the vectors <code>(car v-list)</code>, <code>(car (cdr v-list))</code> and
+<code>(car (cdr (cdr v-list)))</code> in a natural linear algebraic way.</p>
 
 <p>
 It is an error if <code>v-list</code> is not a list of at least three elements,
@@ -178,7 +178,7 @@ Otherwise, the result is unspecified.</p>
 <p>
 The exemplar use of this SRFI can be found in the
 attached <code>srfi-sicp-pictures.org</code> file, which exploits
-the <code>org-display-inline-images</code> feature of Emacs"'" <code>org-mode</code>.
+the <code>org-display-inline-images</code> feature of Emacs&#39 <code>org-mode</code>.
 </p>
 
 The code below is more or less a copy of the code from the test. When
@@ -248,8 +248,7 @@ identifier" corresponds to a file name.</p>
 </LI>
 
 <LI> Unofficial PDF of SICP, second edition.
-     <A HREF="https://web.mit.edu/alexmv/6.037/sicp.pdf"> PDF </A>
-     </br>
+     <A HREF="https://web.mit.edu/alexmv/6.037/sicp.pdf"> PDF </A>,
      <A HREF="https://github.com/jrincayc/sicp-pdf"> Source </A>
 </LI>
 
