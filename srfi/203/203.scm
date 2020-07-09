@@ -1,5 +1,5 @@
 ;;; -*- mode: scheme; -*-
-;;; Time-stamp: <2020-07-08 23:59:50 lockywolf>
+;;; Time-stamp: <2020-07-09 10:56:56 lockywolf>
 ;;; Author: lockywolf
 ;;; Created: 2020-06
 (define canvas-size
@@ -122,6 +122,7 @@
 	    ","
 	    (number->string (cadr (edge2-frame  frame)))
 	    ",0,0"
+	    ;;"," (pict-vect->magick-vect (origin-frame frame) ",")
              )
 
            "-background" "transparent"

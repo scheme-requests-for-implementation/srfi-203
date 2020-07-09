@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- Time-stamp: <2020-07-09 00:14:33 lockywolf> -->
+<!DOCTYPE html> <!-- Time-stamp: <2020-07-09 11:25:03 lockywolf> -->
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -42,6 +42,7 @@ the procedures <code>draw-line</code> and <code>rogers</code> do not
 bear an exclamation mark, either.</li>
 <li><code>canvas-name</code> and <code>canvas-size</code> do not behave very
 well.</li>
+<li>The sample implementation litters in the file system with bogus files.</li>
 </ol>
 
 <h2>Rationale</h2>
@@ -59,33 +60,12 @@ The picture language of the Section 2.2.4 cannot, however, be portably
 implemented using any of the portable Scheme libraries.
 This SRFI aims to fill this gap.</p>
 
-<OL>
-<LI> Racket (complete) implementation of the picture language.
-    <A HREF="https://planet.racket-lang.org/package-source/soegaard/sicp.plt/2/1/planet-docs/sicp-manual/index.html"> Link </A>
-</LI>
-
-<LI> Racket SICP Library, Picture Language.
-    <A HREF="https://docs.racket-lang.org/sicp-manual/SICP_Picture_Language.html"> Link </A>
-</LI>
-
-<LI> Structure and Interpretation of Computer Programs, companion web site. Problem Set 4 (Picture Language).
-    <A HREF="https://mitpress.mit.edu/sites/default/files/sicp/psets/ps4hnd/readme.html"> Link </A>
-</LI>
-
-<LI> The Picture Language implementation in script-fu by mngu2382.
-    <A HREF="https://mngu2382.github.io/sicp/chapter2/00-notes02a.html"> Link </A>
-</LI>
-
-<LI> The Picture Language implementation in Racket by skanev.
-    <A HREF="https://github.com/skanev/playground/tree/master/scheme/sicp/02/showcase/picturelang"> Link </A>
-</LI>
-
-<LI> Functional Geometry by Peter Henderson.
-    <A HREF="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.137.1503"> Link </A>
-</LI>
-
-</OL>
-
+<p>
+Potentially, this SRFI may serve as one of the building blocks on
+which another SRFI, dedicated to
+providing in full all the
+language facilities assumed by SICP (similarly to the SRFI-96), may be implemented.
+</p>
 
 <p>This SRFI is not a complete implementation of the picture language as it is
 presented in the Section 2.2.4.
@@ -149,8 +129,8 @@ It is an error if <code>end</code> is not a list of at least two numbers.
 <DD>
 <p>Draws an image of MIT's founder, William Barton Rogers, as shown in
 Figure 2.11 of SICP, on the canvas so that it fits the frame defined
-by the vectors <code>(car v-list)</code>, <code>(cadr v-list)</code> and
-<code>(caddr v-list)</code> in a natural linear algebraic way.</p>
+by the vectors <code>(car v-list)</code>, <code>(car (cdr v-list))</code> and
+<code>(car (cdr (cdr v-list)))</code> in a natural linear algebraic way.</p>
 
 <p>
 It is an error if <code>v-list</code> is not a list of at least three elements,
@@ -195,6 +175,41 @@ shifted, rotated, and skewed to fit into the frame.
 Otherwise, the result is unspecified.</p>
 </DL>
 
+<h2> Examples </h2>
+
+<p>
+The exemplar use of this SRFI can be found in the
+attached <code>srfi-sicp-pictures.org</code> file, which exploits
+the <code>org-display-inline-images</code> feature of Emacs&#39 <code>org-mode</code>.
+</p>
+
+The code below is more or less a copy of the code from the test. When
+in doubt, consider referring to the org file.
+
+<pre>
+(import (scheme red))
+(import (srfi 203))
+
+(define (make-vect xcor ycor . o)
+  (append (list xcor) (list ycor) o))
+
+(define (make-frame origin edge1 edge2)
+  (list origin edge1 edge2))
+
+(canvas-reset)
+(landau (make-frame (make-vect 0 0) (make-vect 0.5 0.0) (make-vect 0.0 0.5)))
+(rogers (make-frame (make-vect 0.5 0.5) (make-vect 0.5 0.0) (make-vect 0.0 0.5)))
+(draw-line (make-vect 0.5 0.5) (make-vect 0 1.0))
+(draw-bezier (make-vect 0.0 0.5)
+             (make-vect 0.0 1)
+             (make-vect 0.5 0.5)
+             (make-vect 0.5 1)
+)
+(define testpainter (jpeg-file->painter "lambda.jpg"))
+(testpainter (make-frame (make-vect 0.5 0.0) (make-vect 0.5 0.1) (make-vect 0.1 0.5)))
+(display (canvas-refresh))
+
+</pre>
 
 <h2>Implementation</h2>
 
@@ -202,9 +217,50 @@ Otherwise, the result is unspecified.</p>
 a simple file-based implementation, in which the "system-dependent
 identifier" corresponds to a file name.</p>
 
+
+<h2>References</h2>
+<OL>
+<LI> Racket (complete) implementation of the picture language.
+    <A HREF="https://planet.racket-lang.org/package-source/soegaard/sicp.plt/2/1/planet-docs/sicp-manual/index.html"> Link </A>
+</LI>
+
+<LI> Racket SICP Library, Picture Language.
+    <A HREF="https://docs.racket-lang.org/sicp-manual/SICP_Picture_Language.html"> Link </A>
+</LI>
+
+<LI> Structure and Interpretation of Computer Programs, companion web site.
+    <A HREF="https://mitpress.mit.edu/sites/default/files/sicp/index.html"> Link </A>
+</LI>
+
+
+<LI> Structure and Interpretation of Computer Programs, companion web site. Problem Set 4 (Picture Language).
+    <A HREF="https://mitpress.mit.edu/sites/default/files/sicp/psets/ps4hnd/readme.html"> Link </A>
+</LI>
+
+<LI> The Picture Language implementation in script-fu by mngu2382.
+    <A HREF="https://mngu2382.github.io/sicp/chapter2/00-notes02a.html"> Link </A>
+</LI>
+
+<LI> The Picture Language implementation in Racket by skanev.
+    <A HREF="https://github.com/skanev/playground/tree/master/scheme/sicp/02/showcase/picturelang"> Link </A>
+</LI>
+
+<LI> Functional Geometry by Peter Henderson.
+    <A HREF="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.137.1503"> Link </A>
+</LI>
+
+<LI> Unofficial PDF of SICP, second edition.
+     <A HREF="https://web.mit.edu/alexmv/6.037/sicp.pdf"> PDF </A>,
+     <A HREF="https://github.com/jrincayc/sicp-pdf"> Source </A>
+</LI>
+
+
+</OL>
+
 <h2>Acknowledgements</h2>
 
 ??? credit where it is due
+
 
 <h2>Copyright</h2>
 Copyright &copy; Vladimir Nikishkin (2020).
