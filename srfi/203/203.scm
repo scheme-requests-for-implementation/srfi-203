@@ -1,7 +1,24 @@
 ;;; -*- mode: scheme; -*-
-;;; Time-stamp: <2020-07-09 10:56:56 lockywolf>
+;;; Time-stamp: <2020-08-25 11:47:42 lockywolf>
 ;;; Author: lockywolf
 ;;; Created: 2020-06
+
+;; (define (make-canvas-name-size-parameter name size)
+;;   (list name size))
+
+;; (define (get-canvas-name-size-parameter-name param)
+;;   (list-ref param 1))
+
+;; (define (get-canvas-name-size-parameter-size param)
+;;   (list-ref param 2))
+
+;; (define canvas-size-parameter
+;;   (make-parameter
+;;    (make-canvas-name-size-parameter
+;;     200
+;;     (string-append "./" (substring (process->string "uuidgen") 0 36) ".png"))
+;;    (lambda)))
+
 (define canvas-size
   (make-parameter
    200

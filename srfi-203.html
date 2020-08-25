@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- Time-stamp: <2020-07-14 22:46:09 lockywolf> -->
+<!DOCTYPE html> <!-- Time-stamp: <2020-08-25 11:44:14 lockywolf> -->
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -30,16 +30,12 @@ the book and portable Scheme.</p>
 <h2>Issues</h2>
 
 <ol>
-<li>Parameterizing the canvas name or the canvas size may lead to unexpected
-results.</li>
 <li> <code>canvas-reset</code> and <code>canvas-cleanup</code> are not
 called <code>canvas-reset!</code> and <code>canvas-cleanup!</code>,
 although they are definitely called for side effects. However, in SICP
 the procedures <code>draw-line</code> and <code>rogers</code> do not
 bear an exclamation mark, either.</li>
-<li><code>canvas-name</code> and <code>canvas-size</code> do not behave very
-well.</li>
-<li>The sample implementation litters in the file system with bogus files.</li>
+
 </ol>
 
 <h2>Rationale</h2>
@@ -61,10 +57,8 @@ This SRFI aims to fill this gap.</p>
 Potentially, this SRFI may serve as one of the building blocks on
 which another SRFI, dedicated to
 providing in full all the
-language facilities assumed by SICP (similarly to the SRFI-96), may be implemented.
+language facilities assumed by SICP, may be implemented.
 </p>
-
-
 
 <p>This SRFI is not a complete implementation of the picture language as it is
 presented in the Section 2.2.4.
@@ -76,6 +70,16 @@ for which constructors are not provided within this SRFI.
 Those should be sufficiently easy to implement using the code from the book.
 Nevertheless, the code from the sample implementation test file can be
 reused.</p>
+
+<!-- added after an email by John Cowan -->
+<p>
+This SRFI can be compared to SRFI 96, which is to SLIB as this SRFI
+is to the SICP drawing language. SRFI 96 makes no attempt to document
+SLIB (which has over 200 modules), much less to extend it.
+Instead, it documents the constants, variables, procedures, and
+syntax forms that a Scheme must provide in order to fully host SLIB,
+which amount to less than forty.
+</p>
 
 <h2>Specification</h2>
 
@@ -102,7 +106,7 @@ reused.</p>
 <DT><U>Procedure:</U> <code>(canvas-reset)</code>
 <DD>
 Creates a new blank canvas on which subsequent calls to drawing procedures shall
-draw.
+draw. The return value is unspecified.
 
 <DT><U>Procedure:</U> <code>(canvas-refresh)</code>
 <DD>
@@ -110,10 +114,12 @@ Returns a system-dependent identifier (not to be confused with Scheme
 identifiers) of the canvas on which the procedures from
 this package may draw.
 The canvas may not exist unless it has been drawn on.
+If the canvas exists, it is guaranteed to be empty.
 
 <DT><U>Procedure:</U> <code>(canvas-cleanup)</code>
 <DD>
 Deletes the current canvas and cleans the space it occupies.
+The return value is unspecified.
 
 <DT><U>Procedure:</U> <code>(draw-line start end)</code>
 <DD>
@@ -123,6 +129,8 @@ Draws a line on the canvas starting at <code>(car start)</code> , <code> (car
 
 It is an error if <code>start</code> is not a list of at least two numbers.
 It is an error if <code>end</code> is not a list of at least two numbers.
+
+If the canvas does not exist, it is created. 
 
 <DT><U>Procedure:</U> <code>(rogers v-list)</code>
 <DD>
@@ -134,6 +142,8 @@ by the vectors <code>(car v-list)</code>, <code>(car (cdr v-list))</code> and
 <p>
 It is an error if <code>v-list</code> is not a list of at least three elements,
 each of which is a list of at least two numbers.</p>
+
+<p>If the canvas does not exist, it is created. </p>
 
 <p>
 <code>v-list</code> may be one of the possible implementations of a frame,
@@ -162,6 +172,9 @@ Otherwise the result is unspecified.</p>
 <p>
 It is an error if <code>v-list</code> is not a list of at least three elements,
 each of which is a list of at least two numbers.</p>
+
+<p>If the canvas does not exist, it is created. </p>
+
 
 <DT><U>Procedure:</U> <code>(jpeg-file->painter file-name)</code>
 <DD>
@@ -215,6 +228,13 @@ in doubt, consider referring to the org file.
 <p>The <code>203.sld</code> and <code>203.scm</code> files constitute
 a simple file-based implementation, in which the "system-dependent
 identifier" corresponds to a file name.</p>
+
+<p> <code>canvas-name</code> and <code>canvas-size</code> should be
+parameterised at the same call to <code>parameterize</code>.</p>
+
+<p>The sample implementation litters in the file system with bogus files.
+This is a consequence of the generality. Scheme system specific
+implementations are encouraged to provide a method of garbage collection.</p>
 
 
 <h2>References</h2>
