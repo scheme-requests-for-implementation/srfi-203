@@ -4,7 +4,7 @@
 
 
 
-keywords: [[https://srfi.schemers.org/?keywords=binding][Binding]], [[https://srfi.schemers.org/?keywords=control-flow][Control Flow]], [[https://srfi.schemers.org/?keywords=pattern-matching][Pattern Matching]]
+keywords: [[https://srfi.schemers.org/?keywords=miscellaneous][Miscellaneous]]
 
 This repository hosts [[https://srfi.schemers.org/srfi-203/][SRFI 203]]: A Simple Picture Language in the Style of SICP, a [[https://srfi.schemers.org/][Scheme Request for Implementation]].
 
