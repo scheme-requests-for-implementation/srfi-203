@@ -1,5 +1,5 @@
 ;;; -*- mode: scheme; -*-
-;;; Time-stamp: <2020-09-03 12:11:59 lockywolf>
+;;; Time-stamp: <2020-09-03 15:05:22 lockywolf>
 ;;; Author: lockywolf
 ;;; Created: 2020-06
 
@@ -116,16 +116,16 @@
          #;"/tmp/"
          "a-totally-random-file-name-that-is-so-long-that-it-cannot-coincide-with-anything"
          ".jpg"))
-  (with-output-to-file volatile-rogers-filename
-    (lambda ()
-      (write-bytevector idoldata)))
+  (let ((pic-output-port (open-binary-output-file volatile-rogers-filename)))
+    (write-bytevector idoldata pic-output-port)
+    (close-port pic-output-port))
   (let ((loaded-picture (image-read volatile-rogers-filename)))
-    (with-transform
-     (affine-transform (sicp-vect->kawa-point (edge1-frame  frame))
-		       (sicp-vect->kawa-point (edge2-frame  frame))
-		       (pict-vect->magick-vect (origin-frame  frame)))
-     loaded-picture)
-    )
+    (set! kawa-canvas (cons (with-transform
+			  (affine-transform (sicp-vect->kawa-point (edge1-frame  frame))
+					    (sicp-vect->kawa-point (edge2-frame  frame))
+					    (pict-vect->magick-vect (origin-frame  frame)))
+			  loaded-picture)
+			 kawa-canvas)))
   
   (delete-file volatile-rogers-filename))
 
