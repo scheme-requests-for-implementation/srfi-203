@@ -1,0 +1,22 @@
+(import (srfi 203))
+(define (make-vect xcor ycor . o)
+  (append (list xcor) (list ycor) o))
+
+(define (make-frame origin edge1 edge2)
+  (list origin edge1 edge2))
+
+(canvas-reset)
+;(landau (make-frame (make-vect 0 0) (make-vect 0.5 0.0) (make-vect 0.0 0.5)))
+(rogers (make-frame (make-vect 0.5 0.5) (make-vect 0.5 0.0) (make-vect 0.0 0.5)))
+(draw-line (make-vect 0 0.5) (make-vect 0.5 1.0))
+(draw-line (make-vect 0 0.99) (make-vect 0.5 0.5))
+
+;; (draw-bezier (make-vect 0.0 0.5)
+;;              (make-vect 0.0 1)
+;;              (make-vect 0.5 0.5)
+;;              (make-vect 0.5 1)
+;; )
+;; (define testpainter (jpeg-file->painter "lambda.jpg"))
+;; (testpainter (make-frame (make-vect 0.5 0.0) (make-vect 0.5 0.1) (make-vect 0.1 0.5)))
+;;(canvas-refresh)
+(display (canvas-refresh))

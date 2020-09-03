@@ -1,11 +1,15 @@
 ;;; -*- mode: scheme; -*-
-;;; Time-stamp: <2020-09-02 14:14:11 lockywolf>
+;;; Time-stamp: <2020-09-03 12:11:59 lockywolf>
 ;;; Author: lockywolf
 ;;; Created: 2020-06
 
 ;; (begin) for pictures in kawa is called (zbox)
 ;; Tested on the binary version of kawa 3.1.1
-;; ./bin/kawa -w -Dkawa.import.path=".:/home/lockywolf/DevLinux/srfi-203/extra/*.sld"
+;; ./bin/kawa -w -Dkawa.import.path=".:/tmp/srfi-203/extra/*.sld"
+
+
+
+(define kawa-canvas '())
 
 (define canvas-size
   (make-parameter
@@ -13,26 +17,37 @@
    (lambda (size)
      (if (and (exact-integer? size) (<= 2 size 1000))
 	 size
-	 (error "invalid canvas size")))))
+	 (error "Invalid canvas size.")))))
 
-(define canvas-name
-   'kawa-pictures)
+(define canvas-name 'kawa-canvas
+  ;; (make-parameter
+  ;;  'default-list-of-tasks
+  ;;  (lambda (name)
+  ;;    (if (symbol? name)
+  ;; 	 name
+  ;; 	 (error "Canvas name must be a symbol."))))
+  )
+
+
 
 (define (canvas-reset)
   (canvas-cleanup)
-  (system "convert" "xc:white"
-	  "-scale" (string-append
-		    (number->string (canvas-size))
-		    "x"
-		    (number->string (canvas-size)))
-	  (canvas-name)))
+  (set! kawa-canvas
+    (cons (fill 'white (rectangle &P[0 0] &P[(canvas-size) (canvas-size)]))
+	  kawa-canvas))
+  'reset
+  )
 
 (define (canvas-refresh)
-  (string-append "[[" (canvas-name) "]]"))
+  ;; (display "debug: kawa-canvas length=")
+  ;; (display (length kawa-canvas))
+  (newline)
+  (apply zbox (reverse kawa-canvas))
+  )
 
 (define (canvas-cleanup)
-  (when (file-exists? (canvas-name))
-    (delete-file (canvas-name))))
+  (set! kawa-canvas '())
+  'cleaned)
 
 (define (xcor-vect vect)
   (car vect))
@@ -49,42 +64,39 @@
 (define (edge2-frame frame)
   (caddr frame))
 
-(define (pict-vect->magick-vect vector separator)
-  (string-append
-   (number->string (+ 1 (* (canvas-size) (xcor-vect vector))))
-   separator
-   (number->string (+ 1 (* (canvas-size) (ycor-vect vector))))))
+(define (pict-vect->magick-vect vector)
+  &P[(* (canvas-size) (xcor-vect vector)) (* (canvas-size) (ycor-vect vector))])
+(define (sicp-vect->kawa-point vector)
+  &P[(xcor-vect vector) (ycor-vect vector)])
 
 (define (draw-line point1 point2)
-  (system "mogrify"
-	  "-fill" "black"
-	  "-draw" (string-append "line "
-				 (pict-vect->magick-vect point1 ",")
-				 " "
-				 (pict-vect->magick-vect point2 ",")
-				 )
-	  (canvas-name))
-  #;(display (string-append "[[" (canvas-name) "]]"))
-  #;(string-append "[[" (canvas-name) "]]")
+  (set! kawa-canvas (cons (line (pict-vect->magick-vect point1)
+			     (pict-vect->magick-vect point2))
+		       kawa-canvas))
+  'draw-line-finished
   )
 
-(define (draw-bezier . o)
-  (define (prepare-string o)
-    (apply string-append (map (lambda (x)
-	                        (string-append " " (pict-vect->magick-vect x ",")))
-			      o)))
-  (when (< (length o) 3)
-      (error "draw-bezier accepts 3 or more arguments. You give: " (length o)))
-  (system "mogrify"
-	  "-stroke" "black"
-	  "-fill"   "transparent"
-	  "-draw" (string-append "bezier "
-				 (prepare-string o)
-				 )
-	  (canvas-name))
-  #;(display (string-append "[[" (canvas-name) "]]"))
-  #;(string-append "[[" (canvas-name) "]]")
-  )
+;; (define (draw-bezier . o)
+;;   (error "draw-bezier disabled")
+;;   (define (prepare-string o)
+;;     (apply string-append (map (lambda (x)
+;; 	                        (string-append " " (pict-vect->magick-vect x ",")))
+;; 			      o)))
+;;   (when (< (length o) 3)
+;;       (error "draw-bezier accepts 3 or more arguments. You give: " (length o)))
+;;   (system "mogrify"
+;; 	  "-stroke" "black"
+;; 	  "-fill"   "transparent"
+;; 	  "-draw" (string-append "bezier "
+;; 				 (prepare-string o)
+;; 				 )
+;; 	  (canvas-name))
+;;   #;(display (string-append "[[" (canvas-name) "]]"))
+;;   #;(string-append "[[" (canvas-name) "]]")
+;;   )
+
+(define (file->bytevector filename)
+  (path-bytes filename))
 
 (define (jpeg-file->painter filename)
   (unless (file-exists? filename)
@@ -102,36 +114,19 @@
   (define volatile-rogers-filename
       (string-append
          #;"/tmp/"
-         (substring (process->string "uuidgen") 0 36)
+         "a-totally-random-file-name-that-is-so-long-that-it-cannot-coincide-with-anything"
          ".jpg"))
   (with-output-to-file volatile-rogers-filename
     (lambda ()
-       (write-bytevector idoldata)))
-  (system "convert"
-	  (canvas-name)
-	  "("
-	  "-virtual-pixel" "Transparent"
-	   "+distort"
-	   "affineprojection"
-	   (string-append
-	    (number->string (car (edge1-frame  frame)))
-	    ","
-	    (number->string (cadr (edge1-frame  frame)))
-	    ","
-	    (number->string (car (edge2-frame  frame)))
-	    ","
-	    (number->string (cadr (edge2-frame  frame)))
-	    ",0,0"
-	    ;;"," (pict-vect->magick-vect (origin-frame frame) ",")
-             )
-
-           "-background" "transparent"
-	   "-splice" (pict-vect->magick-vect
-		      (origin-frame frame) "x")
-           volatile-rogers-filename
-	   ")"
-           "-composite"
-           (canvas-name))
+      (write-bytevector idoldata)))
+  (let ((loaded-picture (image-read volatile-rogers-filename)))
+    (with-transform
+     (affine-transform (sicp-vect->kawa-point (edge1-frame  frame))
+		       (sicp-vect->kawa-point (edge2-frame  frame))
+		       (pict-vect->magick-vect (origin-frame  frame)))
+     loaded-picture)
+    )
+  
   (delete-file volatile-rogers-filename))
 
 (define rogers-bytevector #u8(#x89 #x50 #x4E #x47 #x0D #x0A #x1A #x0A 0
