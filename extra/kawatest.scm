@@ -6,7 +6,7 @@
   (list origin edge1 edge2))
 
 (canvas-reset)
-;(landau (make-frame (make-vect 0 0) (make-vect 0.5 0.0) (make-vect 0.0 0.5)))
+(landau (make-frame (make-vect 0 0) (make-vect 0.5 0.0) (make-vect 0.0 0.5)))
 (rogers (make-frame (make-vect 0.5 0.5) (make-vect 0.5 0.0) (make-vect 0.0 0.5)))
 (draw-line (make-vect 0 0.5) (make-vect 0.5 1.0))
 (draw-line (make-vect 0 0.99) (make-vect 0.5 0.5))
