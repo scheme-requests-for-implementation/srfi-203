@@ -1,6 +1,14 @@
 #!/usr/bin/chibi-scheme ;;; -*- mode: scheme; -*-
+;;; Time-stamp: <2020-09-04 12:36:16 lockywolf>
+;; Author: lockywolf gmail.com
 
-;;; Time-stamp: <2020-09-04 10:55:07 lockywolf>
+;; Test file for (srfi 203), A Simple Picture Language in the Style of SICP.
+;; Testing is done by running this file as a scheme script, in the
+;; most simple case $(chibi-scheme srfi-sicp-pictures-test-automatic.scm).
+;; If the test suite passes, there should be no output.
+;; If it fails, an (error) is thrown.
+;; Passing of a test suite does not guarantee correctness of the
+;; implementation, but is better than nothing.
 
 (import (scheme base))
 (import (scheme file))
