@@ -24,8 +24,8 @@
 <h2>Abstract</h2>
 
 <p>This SRFI proposes a simple library for programmatic drawing of
-pictures compatible with the Section 2.2.4 of the Structure and
-Interpretation of Computer Programs.</p>
+pictures compatible with Section 2.2.4 of <cite>Structure and
+Interpretation of Computer Programs</cite>.</p>
 
 <p>It aims to close the gap between the Scheme suggested for study in
 the book and portable Scheme.</p>
@@ -43,7 +43,8 @@ bear an exclamation mark, either.</li>
 
 <h2>Rationale</h2>
 
-<p>The <cite>Structure and Interpretation of Computer Programs</cite> is one of the
+<p><cite>Structure and Interpretation of Computer Programs</cite> (SICP)
+by Harold Abelson and Gerald Jay Sussman is one of the
 world's most famous programming textbooks. The code examples in the book are
 given in Scheme, and the exercises are mostly expected to be done in Scheme.
 The examples and exercises are best executed with a Scheme system
@@ -52,7 +53,7 @@ Furthermore, the textbook assumes the existence of several primitives not
 included in any of the Scheme reports.
 Most of these primitives are already either covered by other relevant SRFIs,
 or can be implemented on top of those.
-The picture language of the Section 2.2.4 cannot, however, be portably
+The picture language of Section 2.2.4 cannot, however, be portably
 implemented using any of the portable Scheme libraries.
 This SRFI aims to fill this gap.</p>
 
@@ -64,9 +65,9 @@ language facilities assumed by SICP, may be implemented.
 </p>
 
 <p>This SRFI is not a complete implementation of the picture language as it is
-presented in the Section 2.2.4.
+presented in Section 2.2.4.
 This is intentional. The scope of this SRFI is not to implement the whole
-drawing library presented, but only to implement the minimal subset on top of
+drawing library presented, but only to implement a minimal subset on top of
 which the code from the book can be run.
 This leads to procedures accepting as arguments certain data structures
 for which constructors are not provided within this SRFI.
@@ -130,6 +131,7 @@ procedures will be drawing on an empty canvas.
 Returns a system-dependent identifier (not to be confused with Scheme
 identifiers) of the canvas on which the procedures from
 this package may have drawn.
+
 The canvas may not exist unless it has been drawn on.
 
 <p>
@@ -301,13 +303,13 @@ a simple file-based implementation, in which the "system-dependent
 identifier" corresponds to a file name.</p>
 
 <p> <code>canvas-name</code> and <code>canvas-size</code> should be
-parameterised at the same call to <code>parameterize</code>.</p>
+parameterised by the same <code>parameterize</code> form.</p>
 
-<p>The sample implementation litters in the file system with bogus files.
+<p>The sample implementation litters the file system with bogus files.
 This is a consequence of the generality. Scheme system specific
 implementations are encouraged to provide a method of garbage collection.</p>
 
-<p>The <code>extra</code> directory provides and additional implementation
+<p>The <code>extra</code> directory provides an additional implementation
 for Kawa scheme, as well as a test file <code>kawatest.scm</code> and
 additional resources that may be found helpful when implementing this
 SRFI.</p>
