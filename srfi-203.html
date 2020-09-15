@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- Time-stamp: <2020-09-04 09:20:18 lockywolf> -->
+<!DOCTYPE html> <!-- Time-stamp: <2020-09-15 23:14:47 lockywolf> -->
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -25,8 +25,8 @@
 <h2>Abstract</h2>
 
 <p>This SRFI proposes a simple library for programmatic drawing of
-pictures compatible with the Section 2.2.4 of the Structure and
-Interpretation of Computer Programs.</p>
+pictures compatible with Section 2.2.4 of <cite>Structure and
+Interpretation of Computer Programs</cite>.</p>
 
 <p>It aims to close the gap between the Scheme suggested for study in
 the book and portable Scheme.</p>
@@ -44,7 +44,8 @@ bear an exclamation mark, either.</li>
 
 <h2>Rationale</h2>
 
-<p>The <cite>Structure and Interpretation of Computer Programs</cite> is one of the
+<p><cite>Structure and Interpretation of Computer Programs</cite> (SICP)
+by Harold Abelson and Gerald Jay Sussman is one of the
 world's most famous programming textbooks. The code examples in the book are
 given in Scheme, and the exercises are mostly expected to be done in Scheme.
 The examples and exercises are best executed with a Scheme system
@@ -53,7 +54,7 @@ Furthermore, the textbook assumes the existence of several primitives not
 included in any of the Scheme reports.
 Most of these primitives are already either covered by other relevant SRFIs,
 or can be implemented on top of those.
-The picture language of the Section 2.2.4 cannot, however, be portably
+The picture language of Section 2.2.4 cannot, however, be portably
 implemented using any of the portable Scheme libraries.
 This SRFI aims to fill this gap.</p>
 
@@ -65,9 +66,9 @@ language facilities assumed by SICP, may be implemented.
 </p>
 
 <p>This SRFI is not a complete implementation of the picture language as it is
-presented in the Section 2.2.4.
+presented in Section 2.2.4.
 This is intentional. The scope of this SRFI is not to implement the whole
-drawing library presented, but only to implement the minimal subset on top of
+drawing library presented, but only to implement a minimal subset on top of
 which the code from the book can be run.
 This leads to procedures accepting as arguments certain data structures
 for which constructors are not provided within this SRFI.
@@ -109,16 +110,71 @@ which amount to less than forty.
 <DL>
 <DT><U>Procedure:</U> <code>(canvas-reset)</code>
 <DD>
-Creates a new blank canvas on which subsequent calls to drawing procedures shall
-draw. The return value is unspecified.
+Ensures that the canvas on which subsequent calls to drawing procedures shall
+draw is blank. The return value is unspecified.
+
+<p>
+<i>Explanation: </i> graphics systems differ, and giving a precise definition
+to <code>(canvas-reset)</code> is hard. If the graphics system only supports
+a single graphical display (as the DOS systems used to), this procedure
+is expected to make this display empty.
+If the system is window-based, it is expected that this procedure produce a
+new window.
+If the only drawing is done at the moment that the "picture value" is
+output into the REPL, this procedure is expected to do some off-screen
+operations that will ensure that the subsequent calls to the drawing
+procedures will be drawing on an empty canvas.
+</p>
+
 
 <DT><U>Procedure:</U> <code>(canvas-refresh)</code>
 <DD>
 Returns a system-dependent identifier (not to be confused with Scheme
 identifiers) of the canvas on which the procedures from
-this package may draw.
+this package may have drawn.
+
 The canvas may not exist unless it has been drawn on.
-If the canvas exists, it is guaranteed to be empty.
+
+<p>
+<i>Explanation:</i> a "canvas" is anything that the drawing procedures draw on.
+It may be a window, or a file, or some other drawing device.
+As far as the code of the SICP is concerned, it is legitimate to call
+any drawing routine at any time, without any boilerplate code, do "draw".
+So, each of the drawing routines have to be creating a canvas if it
+does not exist.
+They can, however, draw on an existing one if it does exist.
+Many systems, however, are likely to use a so-called "double-buffering"
+or "delayed drawing" technique, in which drawing and displaying what has been
+drawn are two different operations.
+On the other hand, some systems are expected to try and implement this SRFI
+in a "value-based" way, that is to change the state of the display by
+using some display operation on a scheme value.
+<code>(canvas-refresh)</code> is an attempt to reconcile as many drawing
+approaches as possible.
+After a call to <code>(canvas-refresh)</code> the state of the display
+(whatever it may be) is expected to be a faithful representation of the
+image drawn by a sequence of calls to the drawing routines, regardless of
+the underlying approach that a system is using.
+Therefore, if the system "displays" the return value in some sort of a
+graphical REPL (like Kawa does), <code>(canvas-refresh)</code> returns a
+"picture value", that is expected to be displayed by the REPL.
+If the system has a separate windowing subsystem, not connected to the
+REPL in any meaningful way, the call to <code>(canvas-refresh)</code>
+should guarantee that the window, on which the canvas is displayed,
+is presenting the final result of the drawing and displaying to the user.
+
+One difficulty happens if no drawing operations have been called before a
+call to <code>(canvas-refresh)</code>. The implementations are expected to
+do something reasonable. In the case of the reference implementation,
+<code>(canvas-refresh)</code> returns a file name that could have been
+used for drawing, which may or may not exist.
+In case of a window-based implementation, it is reasonable to return
+a "window handle" of a canvas window (which could be later used to
+destroy this window), but since no window has been created, the implementation
+could return anything that could serve as a valid window identifier.
+If an implementation displays images in the REPL,
+<code>(canvas-refresh)</code> may return an empty picture value.
+</p>
 
 <DT><U>Procedure:</U> <code>(canvas-cleanup)</code>
 <DD>
@@ -188,8 +244,22 @@ each of which is a list of at least two numbers.</p>
 a painter similar to <code>rogers</code>, that is a procedure that
 accepts a frame and draws the image located at <code>file-name</code>
 shifted, rotated, and skewed to fit into the frame.
-Otherwise, the result is unspecified.</p>
+Otherwise, the result is unspecified. In the simplest case this procedure
+can be a synonym to <code>jpeg-file->painter</code>.</p>
+
+<DT><U>Procedure:</U> <code>(image-file->painter file-name)</code>
+<DD>
+
+<p>If <code>image-name</code> exists and is a file that can be
+interpreted as containing a representation of an image, and
+the implementation supports loading such a kind of files,
+<code>image-file->painter</code> returns
+a painter similar to <code>rogers</code>, that is a procedure that
+accepts a frame and draws the image located at <code>file-name</code>
+shifted, rotated, and skewed to fit into the frame.
+Otherwise, the result is unspecified. </p>
 </DL>
+
 
 <h2> Examples </h2>
 
@@ -234,13 +304,13 @@ a simple file-based implementation, in which the "system-dependent
 identifier" corresponds to a file name.</p>
 
 <p> <code>canvas-name</code> and <code>canvas-size</code> should be
-parameterised at the same call to <code>parameterize</code>.</p>
+parameterised by the same <code>parameterize</code> form.</p>
 
-<p>The sample implementation litters in the file system with bogus files.
+<p>The sample implementation litters the file system with bogus files.
 This is a consequence of the generality. Scheme system specific
 implementations are encouraged to provide a method of garbage collection.</p>
 
-<p>The <code>extra</code> directory provides and additional implementation
+<p>The <code>extra</code> directory provides an additional implementation
 for Kawa scheme, as well as a test file <code>kawatest.scm</code> and
 additional resources that may be found helpful when implementing this
 SRFI.</p>
@@ -305,6 +375,9 @@ Arthur A. Gleckler, for helping with the SRFI process.
 </li>
 <li>
 Gerald J. Sussman, for discovering the pedagogical power of functional geometry.
+</li>
+<li>
+Wolfgang Corcoran-Mathe, for an in-depth review.
 </li>
 </ul>
 
