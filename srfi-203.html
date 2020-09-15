@@ -165,7 +165,7 @@ is presenting the final result of the drawing and displaying to the user.
 
 One difficulty happens if no drawing operations have been called before a
 call to <code>(canvas-refresh)</code>. The implementations are expected to
-do something reasonable. In the case of the reference implementation,
+do something reasonable. In the case of the sample implementation,
 <code>(canvas-refresh)</code> returns a file name that could have been
 used for drawing, which may or may not exist.
 In case of a window-based implementation, it is reasonable to return
