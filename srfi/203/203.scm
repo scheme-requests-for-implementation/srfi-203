@@ -1,5 +1,5 @@
 ;;; -*- mode: scheme; -*-
-;;; Time-stamp: <2020-08-25 11:47:42 lockywolf>
+;;; Time-stamp: <2020-09-15 22:40:41 lockywolf>
 ;;; Author: lockywolf
 ;;; Created: 2020-06
 
@@ -108,6 +108,8 @@
     (error "File does not exist: " filename))
   (let ((payload (file->bytevector filename)))
     (lambda (frame) (idol payload frame))))
+
+(define image-file->painter jpeg-file->painter)
 
 (define (rogers frame)
   (idol rogers-bytevector frame))
