@@ -1,5 +1,5 @@
 ;;; -*- mode: scheme; -*-
-;;; Time-stamp: <2020-07-09 00:00:07 lockywolf>
+;;; Time-stamp: <2020-09-15 23:15:18 lockywolf>
 ;;; Author: lockywolf
 ;;; Created: 2020-06
 
@@ -15,6 +15,7 @@
 	  draw-line
 	  draw-bezier
 	  jpeg-file->painter
+	  image-file->painter
 	  rogers
 	  landau)
 

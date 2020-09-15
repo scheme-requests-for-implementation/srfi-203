@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- Time-stamp: <2020-09-04 13:08:55 lockywolf> -->
+<!DOCTYPE html> <!-- Time-stamp: <2020-09-15 23:14:47 lockywolf> -->
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -109,16 +109,71 @@ which amount to less than forty.
 <DL>
 <DT><U>Procedure:</U> <code>(canvas-reset)</code>
 <DD>
-Creates a new blank canvas on which subsequent calls to drawing procedures shall
-draw. The return value is unspecified.
+Ensures that the canvas on which subsequent calls to drawing procedures shall
+draw is blank. The return value is unspecified.
+
+<p>
+<i>Explanation: </i> graphics systems differ, and giving a precise definition
+to <code>(canvas-reset)</code> is hard. If the graphics system only supports
+a single graphical display (as the DOS systems used to), this procedure
+is expected to make this display empty.
+If the system is window-based, it is expected that this procedure produce a
+new window.
+If the only drawing is done at the moment that the "picture value" is
+output into the REPL, this procedure is expected to do some off-screen
+operations that will ensure that the subsequent calls to the drawing
+procedures will be drawing on an empty canvas.
+</p>
+
 
 <DT><U>Procedure:</U> <code>(canvas-refresh)</code>
 <DD>
-Returns a system-dependent identifier (not to be confused with a Scheme
-identifier) of the canvas on which the procedures from
-this package may draw.
+Returns a system-dependent identifier (not to be confused with Scheme
+identifiers) of the canvas on which the procedures from
+this package may have drawn.
+
 The canvas may not exist unless it has been drawn on.
-If the canvas exists, it is guaranteed to be empty.
+
+<p>
+<i>Explanation:</i> a "canvas" is anything that the drawing procedures draw on.
+It may be a window, or a file, or some other drawing device.
+As far as the code of the SICP is concerned, it is legitimate to call
+any drawing routine at any time, without any boilerplate code, do "draw".
+So, each of the drawing routines have to be creating a canvas if it
+does not exist.
+They can, however, draw on an existing one if it does exist.
+Many systems, however, are likely to use a so-called "double-buffering"
+or "delayed drawing" technique, in which drawing and displaying what has been
+drawn are two different operations.
+On the other hand, some systems are expected to try and implement this SRFI
+in a "value-based" way, that is to change the state of the display by
+using some display operation on a scheme value.
+<code>(canvas-refresh)</code> is an attempt to reconcile as many drawing
+approaches as possible.
+After a call to <code>(canvas-refresh)</code> the state of the display
+(whatever it may be) is expected to be a faithful representation of the
+image drawn by a sequence of calls to the drawing routines, regardless of
+the underlying approach that a system is using.
+Therefore, if the system "displays" the return value in some sort of a
+graphical REPL (like Kawa does), <code>(canvas-refresh)</code> returns a
+"picture value", that is expected to be displayed by the REPL.
+If the system has a separate windowing subsystem, not connected to the
+REPL in any meaningful way, the call to <code>(canvas-refresh)</code>
+should guarantee that the window, on which the canvas is displayed,
+is presenting the final result of the drawing and displaying to the user.
+
+One difficulty happens if no drawing operations have been called before a
+call to <code>(canvas-refresh)</code>. The implementations are expected to
+do something reasonable. In the case of the reference implementation,
+<code>(canvas-refresh)</code> returns a file name that could have been
+used for drawing, which may or may not exist.
+In case of a window-based implementation, it is reasonable to return
+a "window handle" of a canvas window (which could be later used to
+destroy this window), but since no window has been created, the implementation
+could return anything that could serve as a valid window identifier.
+If an implementation displays images in the REPL,
+<code>(canvas-refresh)</code> may return an empty picture value.
+</p>
 
 <DT><U>Procedure:</U> <code>(canvas-cleanup)</code>
 <DD>
@@ -188,8 +243,22 @@ each of which is a list of at least two numbers.</p>
 a painter similar to <code>rogers</code>, that is a procedure that
 accepts a frame and draws the image located at <code>file-name</code>
 shifted, rotated, and skewed to fit into the frame.
-Otherwise, the result is unspecified.</p>
+Otherwise, the result is unspecified. In the simplest case this procedure
+can be a synonym to <code>jpeg-file->painter</code>.</p>
+
+<DT><U>Procedure:</U> <code>(image-file->painter file-name)</code>
+<DD>
+
+<p>If <code>image-name</code> exists and is a file that can be
+interpreted as containing a representation of an image, and
+the implementation supports loading such a kind of files,
+<code>image-file->painter</code> returns
+a painter similar to <code>rogers</code>, that is a procedure that
+accepts a frame and draws the image located at <code>file-name</code>
+shifted, rotated, and skewed to fit into the frame.
+Otherwise, the result is unspecified. </p>
 </DL>
+
 
 <h2> Examples </h2>
 
