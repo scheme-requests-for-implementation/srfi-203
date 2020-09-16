@@ -21,6 +21,7 @@
   <li>Draft #1 published: 2020-07-08</li>
   <li>Draft #2 published: 2020-08-25</li>
   <li>Draft #3 published: 2020-09-15</li>
+  <li>Draft #4 published: 2020-09-15</li>
 </ul>
 
 <h2>Abstract</h2>
@@ -108,46 +109,55 @@ which amount to less than forty.
 <!-- Defines a system-dependent name for a file. -->
 <!-- </DL> -->
 
-A "canvas" is anything that the drawing procedures draw on.  It may be
-a window, or a file, or some other drawing device. Due to the great variety of available Scheme implementations and hardware on which they run, it is hard to specify what is a canvas precisely, but it should be a certain location where the result of the drawing procedures is stored. It may be a file, a buffer, a window, or a certain Scheme object dedicated to keep a list of instructions to be flushed to a real graphics system later.
+<p>
+A "canvas" is anything that the drawing procedures draw on. It may be
+a window, or a file, or some other drawing device. Due to the great
+variety of available Scheme implementations and hardware on which they
+run, it is hard to specify what is a canvas precisely, but it should
+be a certain location where the result of the drawing procedures is
+stored. It may be a file, a buffer, a window, or a certain Scheme
+object dedicated to keep a list of instructions to be flushed to a
+real graphics system later.
+</p>
 
-As far as the code of the SICP is concerned, it is legitimate to call
-any drawing routine at any time, without any boilerplate code, do "draw".
-So, each of the drawing routines have to be creating a canvas if it
+<p>
+As far as the code of SICP is concerned, it is legitimate to call
+any drawing routine at any time, without prior initialization of a canvas.
+So, each of the drawing routines has to create a canvas if it
 does not exist.
 They should, however, draw on an existing one if it does exist.
+</p>
 
+<p>
 Many systems are likely to use a so-called "double-buffering"
 or "delayed drawing" technique, in which drawing and displaying what has been
 drawn are two different operations.
-
 On the other hand, some systems are expected to try and implement this SRFI
 in a "value-based" way, that is to change the state of the display by
 using some display operation on a Scheme
 value. (This is the approach
 used by the Kawa sample implementation, which displays the "picture
 value" returned by <code>canvas-refresh</code> in a graphical REPL.)
-
 Other systems may use other routines not specified by this SRFI to
 display the "picture value", if pictures are represented as values.
-
+</p>
 
 <DL>
 <DT><U>Procedure:</U> <code>(canvas-reset)</code>
 <DD>
-Ensures that the canvas on which subsequent calls to drawing procedures shall
+Ensures that the canvas on which subsequent calls to drawing procedures will
 draw is blank. The return value is unspecified.
 
 <p>
-<i>Explanation: </i> graphics systems differ, and giving a precise definition
+<i>Explanation:</i> Graphics systems differ, and giving a precise definition
 to <code>(canvas-reset)</code> is hard. If the graphics system only supports
 a single graphical display (as the DOS systems used to), this procedure
 is expected to make this display empty.
-If the system is window-based, it is likely that this procedure should produce a
+If the system is window-based, it will probably create a
 new window.
 If the only drawing is done at the moment that the "picture value" is
 output into the REPL, this procedure is expected to do some off-screen
-operations that will ensure that the subsequent calls to the drawing
+operations that will ensure that subsequent calls to the drawing
 procedures will be drawing on an empty canvas.
 </p>
 
@@ -156,21 +166,25 @@ procedures will be drawing on an empty canvas.
 <DD>
 Updates the display in an implementation-defined manner to reflect the
 state of the canvas. Returns a system-dependent identifier (not to be
-confused with Scheme identifiers) of the canvas.
+confused with a Scheme identifier) of the canvas.
 
 The canvas may not exist unless it has been drawn on.
 
 <p>
-<i>Explanation:</i> 
+<i>Explanation:</i>
 
 <code>(canvas-refresh)</code> is an attempt to reconcile as many drawing
 approaches as possible.
+</p>
 
+<p>
 After a call to <code>(canvas-refresh)</code> the state of the display
 (whatever it may be) is expected to be a faithful representation of the
 image drawn by a sequence of calls to the drawing routines, regardless of
 the underlying approach that a system is using.
+</p>
 
+<p>
 If the system "displays" the return value in some sort of a
 graphical REPL (like the Kawa sample implementation does), <code>(canvas-refresh)</code> returns a
 "picture value", that is expected to be displayed by the REPL.
@@ -178,7 +192,9 @@ If the system has a separate windowing subsystem, not connected to the
 REPL in any meaningful way, the call to <code>(canvas-refresh)</code>
 should guarantee that the window, on which the canvas is displayed,
 is presenting the final result of the drawing and displaying to the user.
+</p>
 
+<p>
 If <code>(canvas-refresh)</code> is called and no canvas exists, the implementations are expected to
 do something reasonable. In the case of the sample file-based implementation,
 <code>(canvas-refresh)</code> returns a file name that could have been
@@ -187,7 +203,9 @@ In case of a window-based implementation, it is reasonable to return
 a value that could serve as a valid window identifier.
 If an implementation displays images in the REPL,
 <code>(canvas-refresh)</code> might return an empty picture value.
+</p>
 
+<p>
 <code>(canvas-refresh)</code> thus has both "pure" and side-effecting
 semantics: it may change the display, or it may simply return a value
 which can be displayed, or it may do nothing.
