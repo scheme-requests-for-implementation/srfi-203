@@ -88,7 +88,7 @@
 (define (draw-bezier . o)
   (define (prepare-string o)
     (apply string-append (map (lambda (x)
-	                        (string-append " " (pict-vect->magick-vect x ",")))
+				(string-append " " (pict-vect->magick-vect x ",")))
 			      o)))
   (when (< (length o) 3)
       (error "draw-bezier accepts 3 or more arguments. You give: " (length o)))

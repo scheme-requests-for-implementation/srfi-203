@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>SRFI 203: A Simple Picture Language in the Style of SICP</title>
     <link href="/favicon.png" rel="icon" sizes="192x192" type="image/png">
-    <link rel="stylesheet" href="/srfi.css" type="text/css">
+    <link rel="stylesheet" href="https://srfi.schemers.org/srfi.css" type="text/css">
     <meta name="viewport" content="width=device-width, initial-scale=1"></head>
 
   <body>
@@ -19,6 +19,8 @@
   <li>Received: 2020-07-08</li>
   <li>60-day deadline: 2020-09-06</li>
   <li>Draft #1 published: 2020-07-08</li>
+  <li>Draft #2 published: 2020-08-25</li>
+  <li>Draft #3 published: 2020-09-15</li>
 </ul>
 
 <h2>Abstract</h2>
@@ -205,7 +207,7 @@ Draws a line on the canvas starting at <code>(car start)</code> , <code> (car
 It is an error if <code>start</code> is not a list of at least two numbers.
 It is an error if <code>end</code> is not a list of at least two numbers.
 
-If the canvas does not exist, it is created. 
+If the canvas does not exist, it is created.
 
 <DT><U>Procedure:</U> <code>(rogers v-list)</code>
 <DD>
@@ -281,7 +283,7 @@ Otherwise, the result is unspecified. </p>
 <p>
 The exemplar use of this SRFI can be found in the
 attached <code>srfi-sicp-pictures.org</code> file, which exploits
-the <code>org-display-inline-images</code> feature of Emacs&#39 <code>org-mode</code>.
+the <code>org-display-inline-images</code> feature of Emacs&#39; <code>org-mode</code>.
 </p>
 
 The code below is more or less a copy of the code from the test. When
@@ -380,10 +382,10 @@ SRFI.</p>
 
 <ul>
 <li>
-John Cowan, for suggesting how to improve the rationanale.
+John Cowan, for suggesting how to improve the rationale.
 </li>
 <li>
-Per Bothner, for suggesting to make a Kawa implementation.
+Per Bothner, for suggesting that I make a Kawa implementation.
 </li>
 <li>
 Arthur A. Gleckler, for helping with the SRFI process.

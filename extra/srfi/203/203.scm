@@ -126,7 +126,7 @@
 					    (pict-vect->magick-vect (origin-frame  frame)))
 			  loaded-picture)
 			 kawa-canvas)))
-  
+
   (delete-file volatile-rogers-filename))
 
 (define rogers-bytevector #u8(#x89 #x50 #x4E #x47 #x0D #x0A #x1A #x0A 0
