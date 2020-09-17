@@ -1,5 +1,5 @@
 # -*- mode: org; -*-
-# Time-stamp: <2020-09-04 10:01:54 lockywolf>
+# Time-stamp: <2020-09-17 15:30:20 lockywolf>
 
 #+STARTUP: inlineimages
 
@@ -17,11 +17,7 @@
 (landau (make-frame (make-vect 0 0) (make-vect 0.5 0.0) (make-vect 0.0 0.5)))
 (rogers (make-frame (make-vect 0.5 0.5) (make-vect 0.5 0.0) (make-vect 0.0 0.5)))
 (draw-line (make-vect 0.5 0.5) (make-vect 0 1.0))
-(draw-bezier (make-vect 0.0 0.5)
-             (make-vect 0.0 1)
-             (make-vect 0.5 0.5)
-             (make-vect 0.5 1)
-)
+
 (define testpainter (jpeg-file->painter "lambda.jpg"))
 (testpainter (make-frame (make-vect 0.5 0.0) (make-vect 0.5 0.1) (make-vect 0.1 0.5)))
 (display (canvas-refresh))
@@ -29,7 +25,7 @@
 #+end_src
 
 #+RESULTS:
-[[./b73fa5bb-d30f-4e6e-b122-cd278b381951.png]]
+[[./06429839-937e-408e-b46e-6cd8eae66cee.png]]
 
 
 

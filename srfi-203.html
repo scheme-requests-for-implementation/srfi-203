@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- Time-stamp: <2020-09-17 11:49:06 lockywolf> -->
+<!DOCTYPE html> <!-- Time-stamp: <2020-09-17 15:27:11 lockywolf> -->
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -254,25 +254,6 @@ should be a relatively simple exercise.</p>
 
 <p>These procedures, although they are not strictly needed for SICP, may make
 programming with the picture language less mundane.</p>
-
-<DL>
-<DT><U>Procedure:</U> <code>(draw-bezier vec1 vec2 [vecI]* vecN)</code>
-<DD>
-
-<p>Draws a Bezier curve between <code>vec1</code> and <code>vecN</code>.
-If only <code>vec2</code> is supplied, a quadric Bezier curve is drawn,
-in which <code>vec2</code> is used as a control point.
-If one <code>vecI</code> is supplied, a cubic Bezier curve is drawn, in
-which <code>vec2</code> and <code>vecI</code> are used as control points.
-It is not an error to supply more than one <code>vecI</code>, but this
-SRFI does not specify an exact behaviour. Such usages are discouraged.
-
-Otherwise the result is unspecified.</p>
-
-<p>
-It is an error if any argument is not a list of at least two numbers.  If the canvas
-does not exist, it is created.
-</p>
 
 <DT><U>Procedure:</U> <code>(jpeg-file->painter file-name)</code>
 <DD>
