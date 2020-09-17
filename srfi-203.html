@@ -192,8 +192,8 @@ graphical REPL (like the Kawa sample implementation does), <code>(canvas-refresh
 "picture value", that is expected to be displayed by the REPL.
 If the system has a separate windowing subsystem, not connected to the
 REPL in any meaningful way, the call to <code>(canvas-refresh)</code>
-should guarantee that the window, on which the canvas is displayed,
-is presenting the final result of the drawing and displaying to the user.
+should guarantee that the window on which the canvas is displayed
+is presenting the final result of the drawing, and displaying it to the user.
 </p>
 
 <p>
@@ -291,7 +291,7 @@ can be a synonym to <code>jpeg-file->painter</code>.</p>
 
 <p>
 The exemplar use of this SRFI can be found in the
-attached <code>srfi-sicp-pictures.org</code> file, which exploits
+attached <code>srfi-sicp-pictures-test.org</code> file, which exploits
 the <code>org-display-inline-images</code> feature of Emacs&#39; <code>org-mode</code>.
 </p>
 
@@ -312,11 +312,7 @@ in doubt, consider referring to the org file.
 (landau (make-frame (make-vect 0 0) (make-vect 0.5 0.0) (make-vect 0.0 0.5)))
 (rogers (make-frame (make-vect 0.5 0.5) (make-vect 0.5 0.0) (make-vect 0.0 0.5)))
 (draw-line (make-vect 0.5 0.5) (make-vect 0 1.0))
-(draw-bezier (make-vect 0.0 0.5)
-             (make-vect 0.0 1)
-             (make-vect 0.5 0.5)
-             (make-vect 0.5 1)
-)
+
 (define testpainter (jpeg-file->painter "lambda.jpg"))
 (testpainter (make-frame (make-vect 0.5 0.0) (make-vect 0.5 0.1) (make-vect 0.1 0.5)))
 (display (canvas-refresh))
