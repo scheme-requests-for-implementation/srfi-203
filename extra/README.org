@@ -1,0 +1,3 @@
+This directory provides an additional implementation for Kawa scheme,
+as well as a test file [[file:kawatest.scm][kawatest.scm]] and additional resources that may
+be found helpful when implementing this SRFI.
