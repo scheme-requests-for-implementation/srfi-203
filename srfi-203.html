@@ -14,14 +14,14 @@
 
 <h2>Status</h2>
 
-<p>This SRFI is currently in <em>draft</em> status.  Here is <a href="https://srfi.schemers.org/srfi-process.html">an explanation</a> of each status that a SRFI can hold.  To provide input on this SRFI, please send email to <code><a href="mailto:srfi+minus+203+at+srfi+dotschemers+dot+org">srfi-203@<span class="antispam">nospam</span>srfi.schemers.org</a></code>.  To subscribe to the list, follow <a href="https://srfi.schemers.org/srfi-list-subscribe.html">these instructions</a>.  You can access previous messages via the mailing list <a href="https://srfi-email.schemers.org/srfi-203">archive</a>.</p>
+<p>This SRFI is currently in <em>final</em> status.  Here is <a href="https://srfi.schemers.org/srfi-process.html">an explanation</a> of each status that a SRFI can hold.  To provide input on this SRFI, please send email to <code><a href="mailto:srfi+minus+203+at+srfi+dotschemers+dot+org">srfi-203@<span class="antispam">nospam</span>srfi.schemers.org</a></code>.  To subscribe to the list, follow <a href="https://srfi.schemers.org/srfi-list-subscribe.html">these instructions</a>.  You can access previous messages via the mailing list <a href="https://srfi-email.schemers.org/srfi-203">archive</a>.</p>
 <ul>
   <li>Received: 2020-07-08</li>
-  <li>60-day deadline: 2020-09-06</li>
   <li>Draft #1 published: 2020-07-08</li>
   <li>Draft #2 published: 2020-08-25</li>
   <li>Draft #3 published: 2020-09-15</li>
   <li>Draft #4 published: 2020-09-15</li>
+  <li>Finalized: 2020-10-17</li>
 </ul>
 
 <h2>Abstract</h2>
@@ -32,17 +32,6 @@ Interpretation of Computer Programs</cite>.</p>
 
 <p>It aims to close the gap between the Scheme suggested for study in
 the book and portable Scheme.</p>
-
-<h2>Issues</h2>
-
-<ol>
-<li> <code>canvas-reset</code> and <code>canvas-cleanup</code> are not
-called <code>canvas-reset!</code> and <code>canvas-cleanup!</code>,
-although they are definitely called for side effects. However, in SICP
-the procedures <code>draw-line</code> and <code>rogers</code> do not
-bear an exclamation mark, either.</li>
-
-</ol>
 
 <h2>Rationale</h2>
 
