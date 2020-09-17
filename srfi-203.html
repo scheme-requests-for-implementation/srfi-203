@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- Time-stamp: <2020-09-16 09:47:18 lockywolf> -->
+<!DOCTYPE html> <!-- Time-stamp: <2020-09-17 11:49:06 lockywolf> -->
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -256,20 +256,23 @@ should be a relatively simple exercise.</p>
 programming with the picture language less mundane.</p>
 
 <DL>
-<DT><U>Procedure:</U> <code>(draw-bezier . v-list)</code>
+<DT><U>Procedure:</U> <code>(draw-bezier vec1 vec2 [vecI]* vecN)</code>
 <DD>
 
-<p>Draws a cubic Bezier curve between the first and the last points in the
-<code>v-list</code>. If the list has four elements, the middle two are
-used as knots. If the list has three elements, the curve is a quadric curve.
+<p>Draws a Bezier curve between <code>vec1</code> and <code>vecN</code>.
+If only <code>vec2</code> is supplied, a quadric Bezier curve is drawn,
+in which <code>vec2</code> is used as a control point.
+If one <code>vecI</code> is supplied, a cubic Bezier curve is drawn, in
+which <code>vec2</code> and <code>vecI</code> are used as control points.
+It is not an error to supply more than one <code>vecI</code>, but this
+SRFI does not specify an exact behaviour. Such usages are discouraged.
+
 Otherwise the result is unspecified.</p>
 
 <p>
-It is an error if <code>v-list</code> is not a list of at least three elements,
-each of which is a list of at least two numbers.</p>
-
-<p>If the canvas does not exist, it is created. </p>
-
+It is an error if any argument is not a list of at least two numbers.  If the canvas
+does not exist, it is created.
+</p>
 
 <DT><U>Procedure:</U> <code>(jpeg-file->painter file-name)</code>
 <DD>
@@ -279,21 +282,26 @@ each of which is a list of at least two numbers.</p>
 a painter similar to <code>rogers</code>, that is a procedure that
 accepts a frame and draws the image located at <code>file-name</code>
 shifted, rotated, and skewed to fit into the frame.
-Otherwise, the result is unspecified. In the simplest case this procedure
-can be a synonym to <code>jpeg-file->painter</code>.</p>
+Otherwise, the result is unspecified. </p>
 
 <DT><U>Procedure:</U> <code>(image-file->painter file-name)</code>
 <DD>
 
-<p>If <code>image-name</code> exists and is a file that can be
+<p>If <code>image-name</code> exists, and is a file that can be
 interpreted as containing a representation of an image, and
 the implementation supports loading such a kind of files,
 <code>image-file->painter</code> returns
 a painter similar to <code>rogers</code>, that is a procedure that
 accepts a frame and draws the image located at <code>file-name</code>
 shifted, rotated, and skewed to fit into the frame.
-Otherwise, the result is unspecified. </p>
+Otherwise, the result is unspecified.
+</p>
+<p>
+In the simplest case this procedure
+can be a synonym to <code>jpeg-file->painter</code>.</p>
+
 </DL>
+
 
 
 <h2> Examples </h2>
