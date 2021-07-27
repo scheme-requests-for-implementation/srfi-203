@@ -4,6 +4,9 @@ SPDX-FileCopyrightText: 2021 Vasilij Schneidermann <mail@vasilij.de>
 SPDX-License-Identifier: BSD-3-Clause
 -->
 
+This directory contains an implementation of SRFI 203 provided by
+Vasilij Schneidermann.
+
 ## About
 
 Implementation of

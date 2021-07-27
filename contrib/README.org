@@ -1,0 +1,2 @@
+This directory contains implementations of SRFI 203 provided by people
+other than Vladimir Nikishkin, the author of the SRFI.
