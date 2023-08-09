@@ -70,8 +70,6 @@
     (call-with-output-file (canvas-path) values)))
 
 (define (canvas-reset)
-  (canvas-cleanup)
-  (canvas-ensure)
   (canvas-stack '()))
 
 (define (canvas-refresh)
