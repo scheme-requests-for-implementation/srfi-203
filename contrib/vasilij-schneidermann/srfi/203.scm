@@ -70,8 +70,6 @@
     (call-with-output-file (canvas-path) values)))
 
 (define (canvas-reset)
-  (canvas-cleanup)
-  (canvas-ensure)
   (canvas-stack '()))
 
 (define (canvas-refresh)
@@ -89,35 +87,45 @@
 
 (define (draw-line start end)
   (define svg
+    ;; convert y coordinates to SVG convention
     `(line (@ (x1 ,(number->string (xcor-vect start)))
-              (y1 ,(number->string (ycor-vect start)))
+              (y1 ,(number->string (- (canvas-height) (ycor-vect start))))
               (x2 ,(number->string (xcor-vect end)))
-              (y2 ,(number->string (ycor-vect end))))))
+              (y2 ,(number->string (- (canvas-height) (ycor-vect end)))))))
   (canvas-stack (cons svg (canvas-stack))))
 
 (define (draw-image url frame)
   (define svg
+    ;; convert from cartesian, bottom left origin, to SVG, top left origin style coordinates.
     (let* ((origin (origin-frame frame))
            (edge1 (edge1-frame frame))
            (edge2 (edge2-frame frame))
-           (a (xcor-vect edge1))
-           (b (ycor-vect edge1))
-           (c (xcor-vect edge2))
-           (d (ycor-vect edge2))
-           (e (xcor-vect origin))
-           (f (ycor-vect origin))
+           ;; svg-origin is upper left-hand corner - add edge2 to origin
+           (svg-origin-x (+  (xcor-vect origin)
+                             (xcor-vect edge2)))
+           (svg-origin-y (- (canvas-height)  ; convert to svg coords
+                            (+ (ycor-vect origin)
+                               (ycor-vect edge2))))
+           ;; svg-edge1
+           (svg-edge1-x (xcor-vect edge1))
+           ;; up is down
+           (svg-edge1-y (- (ycor-vect edge1)))
+           ;; svg edge 2 inverse of edge2
+           (svg-edge2-x (- (xcor-vect edge2)))
+           ;; don't need to invert y as up is down
+           (svg-edge2-y (ycor-vect edge2))
            (transform (string-append "matrix("
-                                     (number->string a)
+                                     (number->string svg-edge1-x)
                                      ", "
-                                     (number->string b)
+                                     (number->string svg-edge1-y)
                                      ", "
-                                     (number->string c)
+                                     (number->string svg-edge2-x)
                                      ", "
-                                     (number->string d)
+                                     (number->string svg-edge2-y)
                                      ", "
-                                     (number->string e)
+                                     (number->string svg-origin-x)
                                      ", "
-                                     (number->string f)
+                                     (number->string svg-origin-y)
                                      ")")))
       `(g (@ (transform ,transform))
           (image (@ (xlink:href ,url)
